@@ -63,7 +63,7 @@ export default function DestinationControl({ center, initialDistanceKm=1, onResu
   return (
     <div className='container'>
       <div className={`distance-display ${isClose ? 'correct' : ''}`}>
-        <span className="distance">{ shownMeters !== null ? String(shownMeters) : '--' }</span>
+        <span className="distance">{ shownMeters !== null ? String(shownMeters) : '----' }</span>
         <span className="unit">m</span>
       </div>
       <div></div>
