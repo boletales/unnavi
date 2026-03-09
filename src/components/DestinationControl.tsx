@@ -75,7 +75,7 @@ export default function DestinationControl({ center, initialDistanceKm=1, onResu
         <p className="status">{status || ' '}</p>
       </div>
       <footer>
-        <p>Data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors<br/>POI via <a href="https://overpass-api.de/">Overpass API</a></p>
+        <p>Map Data from <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a><br/>POI via <a href="https://overpass-api.de/">Overpass API</a></p>
       </footer>
     </div>
   )
