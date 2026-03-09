@@ -1,18 +1,11 @@
 import React, { useState } from 'react'
 import MapView from '../components/MapView'
-import { findDestination } from '../utils/overpass'
+import DestinationControl from '../components/DestinationControl'
 
 export default function Debug(): JSX.Element {
   const [center, setCenter] = useState({ lat:35.681, lon:139.767 })
   const [radiusKm, setRadiusKm] = useState<number>(1)
   const [lastRun, setLastRun] = useState<any>(null)
-
-  async function run(){
-    console.log('Debug: starting findDestination', { center, radiusKm })
-    const res = await findDestination(center.lat, center.lon, Number(radiusKm))
-    console.log('Debug: findDestination result', res)
-    setLastRun(res)
-  }
 
   const markers: Array<any> = []
   // show center point on map
@@ -29,9 +22,12 @@ export default function Debug(): JSX.Element {
         <div style={{ width: 320 }}>
           <label>中心緯度: <input value={center.lat} onChange={e=>setCenter(c=>({...c, lat: Number(e.target.value)}))} /></label><br />
           <label>中心経度: <input value={center.lon} onChange={e=>setCenter(c=>({...c, lon: Number(e.target.value)}))} /></label><br />
-          <label>目的距離 (km): <input value={radiusKm} onChange={e=>setRadiusKm(Number(e.target.value))} /></label><br />
           <div style={{ marginTop: 8 }}>
-            <button onClick={run}>アルゴリズム実行</button>
+            <DestinationControl center={center} initialDistanceKm={radiusKm} onResult={({ res, dist })=>{
+              console.log('Debug: destination result', res)
+              setLastRun(res)
+              setRadiusKm(dist)
+            }} />
           </div>
           <div style={{ marginTop: 12 }}>
             <div><strong>中心点:</strong> {center.lat.toFixed(6)}, {center.lon.toFixed(6)}</div>
@@ -46,7 +42,7 @@ export default function Debug(): JSX.Element {
             center={[center.lat, center.lon]}
             markers={markers}
             circle={[
-              { center: { lat: center.lat, lon: center.lon }, radius: Number(radiusKm) * 1000 },
+              { center: { lat: center.lat, lon: center.lon }, radius: radiusKm * 1000 },
               ...(lastRun?.centerCircle ? [lastRun.centerCircle] : [])
             ]}
             onMapClick={([lat,lon])=>setCenter({lat,lon})}

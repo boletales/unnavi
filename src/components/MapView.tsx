@@ -20,7 +20,7 @@ export default function MapView({ center=[35.681,139.767], markers=[], circle=nu
     if(!ref.current) return
     mapRef.current = L.map(ref.current).setView(center, 15)
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; OpenStreetMap contributors'
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors — Data licensed under <a href="https://opendatacommons.org/licenses/odbl/">ODbL</a>'
     }).addTo(mapRef.current)
     return ()=>{ mapRef.current?.remove(); mapRef.current = null }
   }, [])

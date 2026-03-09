@@ -12,10 +12,7 @@ export default function App(): JSX.Element {
 
   return (
     <div>
-      <header style={{ padding: 8, borderBottom: '1px solid #ddd' }}>
-        <a href="#/">主ページ</a> | <a href="#/debug">デバッグ</a>
-      </header>
-      <main style={{ padding: 8 }}>
+      <main>
         {route === '#/' && <Main />}
         {route === '#/debug' && <Debug />}
       </main>

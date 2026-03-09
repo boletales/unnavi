@@ -1,2 +1,42 @@
-article/draft.md
+# Node
+node_modules/
+npm-debug.log*
+pnpm-debug.log*
+
+# Build output
+dist/
+build/
+
+# Environment files
+.env
+.env.*.local
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+*.sublime-workspace
+
+# TypeScript
+*.tsbuildinfo
+
+# Coverage
+coverage/
+
+# Cache
+.cache/
+
+# Others
+.parcel-cache/
+/.pnp.*
+
 AGENTS.md
+node_modules/

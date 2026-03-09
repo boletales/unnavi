@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import MapView from '../components/MapView'
-import { findDestination } from '../utils/overpass'
+import DestinationControl from '../components/DestinationControl'
 
 type Pos = { lat: number; lon: number }
 
@@ -17,57 +16,32 @@ function distanceKm(a: Pos, b: Pos){
 
 export default function Main(): JSX.Element {
   const [pos, setPos] = useState<Pos>({lat:35.681, lon:139.767})
-  const [distance, setDistance] = useState<number>(1)
-  const [dest, setDest] = useState<any>(()=>{
-    try { return JSON.parse(localStorage.getItem('unnavi_destination') || 'null') } catch(e){ return null }
-  })
   useEffect(()=>{
-    if(navigator.geolocation){
-      navigator.geolocation.getCurrentPosition(p=>{
+    let watchId: number | null = null
+    const geo: any = (navigator as any).geolocation
+    if(geo && typeof geo.watchPosition === 'function'){
+      try{
+        watchId = geo.watchPosition(
+          (p: GeolocationPosition) => setPos({ lat: p.coords.latitude, lon: p.coords.longitude }),
+          (err: GeolocationPositionError) => console.warn('geolocation watch error', err),
+          { enableHighAccuracy: true, maximumAge: 1000, timeout: 5000 }
+        )
+      }catch(e){
+        console.warn('failed to start geolocation.watchPosition', e)
+      }
+    } else if(geo && typeof geo.getCurrentPosition === 'function'){
+      geo.getCurrentPosition((p: GeolocationPosition)=>{
         setPos({lat:p.coords.latitude, lon:p.coords.longitude})
       })
     }
+    return ()=>{
+      try{ if(watchId !== null && geo && typeof geo.clearWatch === 'function') geo.clearWatch(watchId) }catch(e){}
+    }
   },[])
 
-  async function handleCreate(){
-    const res = await findDestination(pos.lat, pos.lon, Number(distance))
-    if(res?.destination){
-      const record = { createdAt: Date.now(), center: res.center, dest: res.destination }
-      localStorage.setItem('unnavi_destination', JSON.stringify(record))
-      setDest(record)
-    } else {
-      alert('目的地が見つかりませんでした。')
-    }
-  }
-
-  const markers: Array<any> = []
-  if(dest){
-    markers.push({ lat: dest.dest.lat, lon: dest.dest.lon, color: 'red', text: '目的地' })
-  }
-
   return (
-    <div>
-      <h2>主ページ</h2>
-      <div style={{ display: 'flex', gap: 12 }}>
-        <div style={{ flex: 1 }}>
-          <label>距離 (km): <input type="number" value={distance} min={0.1} step={0.1} onChange={e=>setDistance(Number(e.target.value))} /></label>
-          <div style={{ marginTop: 8 }}>
-            <button onClick={handleCreate}>目的地を指定する</button>
-          </div>
-          <div style={{ marginTop: 12 }}>
-            <strong>現在地:</strong> {pos.lat.toFixed(6)}, {pos.lon.toFixed(6)}
-          </div>
-          {dest && (
-            <div style={{ marginTop: 8 }}>
-              <strong>最後の目的地:</strong> {dest.dest.lat.toFixed(6)}, {dest.dest.lon.toFixed(6)}<br />
-              距離: {distanceKm(pos, {lat: dest.dest.lat, lon: dest.dest.lon}).toFixed(2)} km
-            </div>
-          )}
-        </div>
-        <div style={{ flex: 2 }}>
-          <MapView center={[pos.lat, pos.lon]} markers={markers} />
-        </div>
-      </div>
-    </div>
+    <DestinationControl center={pos} onResult={(r)=>{
+      console.log('Main: destination created', r)
+    }} />
   )
 }

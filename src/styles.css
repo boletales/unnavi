@@ -1,4 +1,64 @@
-body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; margin:0 }
-#root { min-height: 100vh }
-input { padding:4px; margin:4px 0 }
-button { padding:6px 10px }
+body {
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    margin: 0;
+    font-size: 1rem;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+#root { 
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+input, button {
+	font-size: inherit;
+	font-family: inherit;
+}
+
+input { padding: 4px; margin: 4px 0 }
+button { padding: 0.5rem 1rem }
+
+.container {
+	width: 100%;
+	display: grid;
+	grid-template-rows: auto;
+	place-items: center;
+	place-content: center;
+	height: 300px;
+	grid-template-rows: 1fr 1fr 1fr;
+}
+
+@media (min-width: 768px) {
+	.container { width: 750px; margin: 0 auto }
+}
+
+@media (min-width: 1024px) {
+	.container { width: 960px }
+}
+
+.distance { font-size: 5rem; font-weight: bold; color: #55a; display: inline-block; margin: 0 0.7rem }
+.unit { font-size: 2rem; color: #55a }
+.status { color: #889; width: max-content; margin: 0.5rem auto }
+.distance-display { text-align: center; vertical-align: super }
+.input-box { width: max-content; margin: 0.5rem auto }
+
+.visually-hidden { position: absolute !important; height: 1px; width: 1px; overflow: hidden; clip: rect(1px, 1px, 1px, 1px); white-space: nowrap }
+
+p::after {
+  content: "\200B";
+  display: inline-block;
+}
+
+footer {
+  font-size: 0.8rem;
+  color: #889;
+  text-align: center;
+  margin: 1rem auto;
+}
+
+footer a {
+  color: #88c;
+}
