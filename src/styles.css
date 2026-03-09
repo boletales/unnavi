@@ -40,7 +40,7 @@ button { padding: 0.5rem 1rem }
 }
 
 .distance { font-size: 5rem; font-weight: bold; color: #55a; display: inline-block; margin: 0 0.7rem }
-.unit { font-size: 2rem; color: #55a }
+.unit { font-size: 2rem; font-weight: bold; color: #55a }
 .status { color: #889; width: max-content; margin: 0.5rem auto }
 .distance-display { text-align: center; vertical-align: super }
 .input-box { width: max-content; margin: 0.5rem auto }
