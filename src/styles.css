@@ -39,12 +39,21 @@ button { padding: 0.5rem 1rem }
 	.container { width: 960px }
 }
 
-.distance { font-size: 5rem; font-weight: bold; color: #55a; display: inline-block; margin: 0 0.7rem }
-.unit { font-size: 2rem; font-weight: bold; color: #55a }
+.distance { font-size: 5rem; display: inline-block; margin: 0 0.7rem }
+.unit { font-size: 2rem; }
 .status { color: #889; width: max-content; margin: 0.5rem auto }
-.distance-display { text-align: center; vertical-align: super }
-.input-box { width: max-content; margin: 0.5rem auto }
+.distance-display {
+  text-align: center;
+  vertical-align: super;
+  font-weight: bold;
+  transition: color 0.5s ease;
+  color: #55a;
+}
+.distance-display.correct {
+  color: #4c5;
+}
 
+.input-box { width: max-content; margin: 0.5rem auto }
 .visually-hidden { position: absolute !important; height: 1px; width: 1px; overflow: hidden; clip: rect(1px, 1px, 1px, 1px); white-space: nowrap }
 
 p::after {

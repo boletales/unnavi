@@ -58,10 +58,11 @@ export default function DestinationControl({ center, initialDistanceKm=1, onResu
   }
 
   const shownMeters = dest ? Math.round(distanceKm(center, { lat: dest.dest.lat, lon: dest.dest.lon }) * 1000) : (displayMeters ?? null)
+  const isClose = shownMeters !== null && shownMeters <= 10
 
   return (
     <div className='container'>
-      <div className="distance-display">
+      <div className={`distance-display ${isClose ? 'correct' : ''}`}>
         <span className="distance">{ shownMeters !== null ? String(shownMeters) : '--' }</span>
         <span className="unit">m</span>
       </div>
