@@ -1,5 +1,5 @@
 ## tl;dr
-オモコロの岡田悠氏の記事「[目的地のわからないナビアプリを作った](https://note.com/hyosasa/n/n917c1b0efb06)」に触発され、ランダムな目的地への距離だけ表示する[アプリケーション](https://boletales.github.io/unnavi/)を作成した。歩いてたどり着けそうな場所だけを目的地として選定するため、OpenStreetMap のデータを利用して路地のみを選択するようにしている。
+岡田悠氏の記事「[目的地のわからないナビアプリを作った](https://note.com/hyosasa/n/n917c1b0efb06)」に触発され、ランダムな目的地への距離だけ表示する[アプリケーション](https://boletales.github.io/unnavi/)を作成した。歩いてたどり着けそうな場所だけを目的地として選定するため、OpenStreetMap のデータを利用して路地のみを選択するようにしている。
 
 ## OpenStreetMap について
 [OpenStreetMap（OSM）](https://www.openstreetmap.org/)は、ユーザーが自由に調査編集できる地理情報データベースである。ウィキペディアがフリーの百科事典であるように、OSMはちょうどフリーの地図であると思ってよい。上記サイトを開いて表示される地図は、全世界のユーザー（マッパーと呼ばれる）が追記した地理情報を地図画像の形に描画したものである。
@@ -24,7 +24,7 @@ way["highway"~"^(residential|living_street|pedestrian|footway|path|unclassified)
 実際に散歩してみた。（後で書く）
 
 ## まとめ
-この記事では、散歩の目的地をランダムに決めるアプリケーションを作成した。OSMのデータはクレジットするだけで自由に利用でき、その利用手段もよく確立されている。お手軽に地理情報を利用したい各位においては、OSMの利用を選択肢の一つとして覚えていただければ幸いである。
+この記事では、散歩の目的地をランダムに決めるアプリケーションを作成した。OSMのデータはクレジットするだけで自由に利用でき、その利用手段もよく確立されている。お手軽に地理情報を利用したい各位においては、OSMを選択肢の一つとして覚えていただければ幸いである。
 
 ## 謝辞
 このアプリケーションで利用しているデータは[OpenStreetMap](https://www.openstreetmap.org/copyright)に帰属する。OpenStreetMapの貢献者の皆様と、公開Overpass APIを提供している[overpass-api.de](https://overpass-api.de/)に、深く感謝申し上げる。
