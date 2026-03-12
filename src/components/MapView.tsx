@@ -6,19 +6,19 @@ type Marker = { lat: number; lon: number; color?: string; text?: string }
 type Circle = { center: { lat: number; lon: number }; radius: number }
 
 interface MapViewProps {
-  center?: [number, number]
+  center?: { lat: number; lon: number }
   markers?: Marker[]
   circle?: Circle | Circle[] | null
   onMapClick?: (coords: [number, number]) => void
 }
 
-export default function MapView({ center=[35.681,139.767], markers=[], circle=null, onMapClick }: MapViewProps){
+export default function MapView({ center={lat:35.681, lon:139.767}, markers=[], circle=null, onMapClick }: MapViewProps){
   const ref = useRef<HTMLDivElement | null>(null)
   const mapRef = useRef<L.Map | null>(null)
 
   useEffect(()=>{
     if(!ref.current) return
-    mapRef.current = L.map(ref.current).setView(center, 15)
+    mapRef.current = L.map(ref.current).setView([center.lat, center.lon], 15)
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors — Data licensed under <a href="https://opendatacommons.org/licenses/odbl/">ODbL</a>'
     }).addTo(mapRef.current)
@@ -27,7 +27,7 @@ export default function MapView({ center=[35.681,139.767], markers=[], circle=nu
 
   useEffect(()=>{
     if(!mapRef.current) return
-    mapRef.current.setView(center, 15)
+    mapRef.current.setView([center.lat, center.lon], 15)
   }, [center])
 
   useEffect(()=>{

@@ -5,12 +5,13 @@ type Pos = { lat: number; lon: number }
 
 interface Props {
   center: Pos
+  pos: Pos
   initialDistanceKm?: number
   // onResult receives object { res, dist } where dist is in km
   onResult?: (payload: { res: any; dist: number }) => void
 }
 
-export default function DestinationControl({ center, initialDistanceKm=1, onResult }: Props){
+export default function DestinationControl({ center, pos, initialDistanceKm=1, onResult }: Props){
   // store input as meters string to allow typing decimals like "500."
   const [distanceMeters, setDistanceMeters] = useState<string>(String(Math.round(initialDistanceKm*1000)))
   const [dest, setDest] = useState<any>(()=>{
@@ -49,7 +50,7 @@ export default function DestinationControl({ center, initialDistanceKm=1, onResu
       const record = { createdAt: Date.now(), center: res.center, dest: res.destination }
       localStorage.setItem('unnavi_destination', JSON.stringify(record))
       setDest(record)
-      const actualMeters = Math.round(distanceKm(center, { lat: res.destination.lat, lon: res.destination.lon }) * 1000)
+      const actualMeters = Math.round(distanceKm(pos, { lat: res.destination.lat, lon: res.destination.lon }) * 1000)
       setDisplayMeters(actualMeters)
       onResult && onResult({ res, dist: distKm })
     } else {
@@ -57,11 +58,11 @@ export default function DestinationControl({ center, initialDistanceKm=1, onResu
     }
   }
 
-  const shownMeters = dest ? Math.round(distanceKm(center, { lat: dest.dest.lat, lon: dest.dest.lon }) * 1000) : (displayMeters ?? null)
+  const shownMeters = dest ? Math.round(distanceKm(pos, { lat: dest.dest.lat, lon: dest.dest.lon }) * 1000) : (displayMeters ?? null)
   const isClose = shownMeters !== null && shownMeters <= 10
 
   return (
-    <div className='container'>
+    <div className='destination-control'>
       <div className={`distance-display ${isClose ? 'correct' : ''}`}>
         <span className="distance">{ shownMeters !== null ? String(shownMeters) : '----' }</span>
         <span className="unit">m</span>
@@ -74,9 +75,6 @@ export default function DestinationControl({ center, initialDistanceKm=1, onResu
         </div>
         <p className="status">{status || ' '}</p>
       </div>
-      <footer>
-        <p>Map Data from <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a><br/>POI via <a href="https://overpass-api.de/">Overpass API</a></p>
-      </footer>
     </div>
   )
 }

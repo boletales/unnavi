@@ -21,13 +21,12 @@ input, button {
 input { padding: 4px; margin: 4px 0 }
 button { padding: 0.5rem 1rem }
 
-.container {
+.destination-control {
 	width: 100%;
 	display: grid;
 	grid-template-rows: auto;
 	place-items: center;
 	place-content: center;
-	height: 300px;
 	grid-template-rows: 1fr 1fr 1fr;
 }
 
@@ -37,6 +36,10 @@ button { padding: 0.5rem 1rem }
 
 @media (min-width: 1024px) {
 	.container { width: 960px }
+}
+
+.container{
+	height: 300px;
 }
 
 .distance { font-size: 5rem; display: inline-block; margin: 0 0.7rem }
@@ -70,4 +73,11 @@ footer {
 
 footer a {
   color: #88c;
+}
+
+details {
+  font-size: 0.8rem;
+  color: #889;
+  text-align: center;
+  margin: 1rem auto;
 }

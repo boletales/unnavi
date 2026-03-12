@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import DestinationControl from '../components/DestinationControl'
+import MapView from '../components/MapView'
 
 type Pos = { lat: number; lon: number }
 
@@ -15,14 +16,16 @@ function distanceKm(a: Pos, b: Pos){
 }
 
 export default function Main(): JSX.Element {
+  const [useGNSS, setUseGNSS] = useState<boolean>(true)
   const [pos, setPos] = useState<Pos>({lat:35.681, lon:139.767})
+  const [center, setCenter] = useState<Pos>(pos)
   useEffect(()=>{
     let watchId: number | null = null
     const geo: any = (navigator as any).geolocation
     if(geo && typeof geo.watchPosition === 'function'){
       try{
         watchId = geo.watchPosition(
-          (p: GeolocationPosition) => setPos({ lat: p.coords.latitude, lon: p.coords.longitude }),
+          (p: GeolocationPosition) => updatePos({ lat: p.coords.latitude, lon: p.coords.longitude }),
           (err: GeolocationPositionError) => console.warn('geolocation watch error', err),
           { enableHighAccuracy: true, maximumAge: 1000, timeout: 5000 }
         )
@@ -31,7 +34,7 @@ export default function Main(): JSX.Element {
       }
     } else if(geo && typeof geo.getCurrentPosition === 'function'){
       geo.getCurrentPosition((p: GeolocationPosition)=>{
-        setPos({lat:p.coords.latitude, lon:p.coords.longitude})
+        updatePos({lat:p.coords.latitude, lon:p.coords.longitude})
       })
     }
     return ()=>{
@@ -39,9 +42,33 @@ export default function Main(): JSX.Element {
     }
   },[])
 
+  function updatePos(pos: Pos){
+    setPos(pos)
+    if(useGNSS) setCenter(pos)
+  }
+
+  function updateUseGNSS(enabled: boolean){
+    setUseGNSS(enabled)
+    if(enabled) setCenter(pos)
+  }
+
   return (
-    <DestinationControl center={pos} onResult={(r)=>{
+    <div className="container">
+    <DestinationControl pos={pos}center={center} onResult={(r)=>{
       console.log('Main: destination created', r)
     }} />
+    <details>
+      <summary>目的地の中心点</summary>
+      <label><input type="checkbox" checked={useGNSS} onChange={e=>updateUseGNSS(e.currentTarget.checked)} /> 現在地を中心にする</label>
+      <MapView center={center} markers={[{ lat: center.lat, lon: center.lon, color: 'red', text: '中心'}, { lat: pos.lat, lon: pos.lon, color: 'blue', text: '現在地' }]}
+        onMapClick={([lat,lon])=>{
+          setCenter({lat, lon})
+          setUseGNSS(false)
+      }} />
+    </details>
+    <footer>
+      <p>Map Data from <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a><br/>POI via <a href="https://overpass-api.de/">Overpass API</a></p>
+    </footer>
+    </div>
   )
 }
