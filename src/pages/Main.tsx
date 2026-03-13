@@ -25,7 +25,7 @@ export default function Main(): JSX.Element {
     if(geo && typeof geo.watchPosition === 'function'){
       try{
         watchId = geo.watchPosition(
-          (p: GeolocationPosition) => updatePos({ lat: p.coords.latitude, lon: p.coords.longitude }),
+          (p: GeolocationPosition) => updatePos({ lat: p.coords.latitude, lon: p.coords.longitude }, useGNSS),
           (err: GeolocationPositionError) => console.warn('geolocation watch error', err),
           { enableHighAccuracy: true, maximumAge: 1000, timeout: 5000 }
         )
@@ -34,15 +34,15 @@ export default function Main(): JSX.Element {
       }
     } else if(geo && typeof geo.getCurrentPosition === 'function'){
       geo.getCurrentPosition((p: GeolocationPosition)=>{
-        updatePos({lat:p.coords.latitude, lon:p.coords.longitude})
+        updatePos({lat:p.coords.latitude, lon:p.coords.longitude}, useGNSS)
       })
     }
     return ()=>{
       try{ if(watchId !== null && geo && typeof geo.clearWatch === 'function') geo.clearWatch(watchId) }catch(e){}
     }
-  },[])
+  },[useGNSS])
 
-  function updatePos(pos: Pos){
+  function updatePos(pos: Pos, useGNSS: boolean){
     setPos(pos)
     if(useGNSS) setCenter(pos)
   }

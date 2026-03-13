@@ -27,7 +27,7 @@ export default function MapView({ center={lat:35.681, lon:139.767}, markers=[], 
 
   useEffect(()=>{
     if(!mapRef.current) return
-    mapRef.current.setView([center.lat, center.lon], 15)
+    mapRef.current.setView([center.lat, center.lon], mapRef.current.getZoom())
   }, [center])
 
   useEffect(()=>{
